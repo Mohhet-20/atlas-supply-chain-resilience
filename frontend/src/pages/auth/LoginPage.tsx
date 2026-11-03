@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../components/PageHeader";
 import { ApiError } from "../../lib/api";
 import { authApi } from "../../lib/authApi";
+import { DEMO_ACCOUNT } from "../../lib/config";
 import { tokenStore } from "../../lib/registryApi";
 
 /**
@@ -16,6 +17,7 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | undefined>();
+  const demo = DEMO_ACCOUNT;
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -55,6 +57,24 @@ export function LoginPage() {
           {busy ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      {demo ? (
+        <aside className="panel mt-4 max-w-md p-5 text-sm" aria-label="Demo account">
+          <p className="m-0">
+            This is a public demo with synthetic data. Sign in as <code>{demo.username}</code> with password{" "}
+            <code>{demo.password}</code>, or let the button fill it in.
+          </p>
+          <button
+            type="button"
+            className="btn mt-3"
+            onClick={() => {
+              setUsername(demo.username);
+              setPassword(demo.password);
+            }}
+          >
+            Use demo account
+          </button>
+        </aside>
+      ) : null}
     </>
   );
 }

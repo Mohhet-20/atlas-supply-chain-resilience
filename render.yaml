@@ -1,0 +1,59 @@
+# Render blueprint for the public ATLAS demo (synthetic data only). New > Blueprint > pick this repository.
+# The static site proxies /api/* to the API, so the browser sees one origin and the strict CSP (connect-src 'self') holds.
+# If Render gives the services different hostnames than the names below, update the two URLs marked "hostname".
+services:
+  - type: web
+    name: atlas-demo-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deploy/demo/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/readiness
+    envVars:
+      - key: ATLAS_CORS_ALLOWED_ORIGINS
+        value: https://atlas-demo.onrender.com          # hostname of the static site
+      - key: ATLAS_DEMO_USERNAME
+        value: demo
+      - key: ATLAS_DEMO_PASSWORD
+        sync: false                                      # choose one; it is shown on the sign-in page
+      - key: ATLAS_INTEGRATIONS_MASTER_KEY
+        generateValue: true
+      - key: ATLAS_LOG_LEVEL
+        value: INFO
+
+  - type: web
+    name: atlas-demo
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: /api/v1
+      - key: VITE_DEMO_USERNAME
+        value: demo
+      - key: VITE_DEMO_PASSWORD
+        sync: false                                      # the same value as ATLAS_DEMO_PASSWORD
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://atlas-demo-api.onrender.com/api/*   # hostname of the API service
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; connect-src 'self'"
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable

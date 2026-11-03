@@ -111,6 +111,16 @@ VITE_API_BASE_URL=http://127.0.0.1:8765/api/v1 npm run build
 npx vite preview --port 4180           # http://127.0.0.1:4180, sign in as e2e-admin / Synthetic-E2E-Pass-Phrase-41!
 ```
 
+### Hosted demo (Render)
+
+[`render.yaml`](render.yaml) deploys the same synthetic demo as two free Render services: the API
+([`deploy/demo/Dockerfile`](deploy/demo/Dockerfile), started by [`scripts/demo_start.py`](scripts/demo_start.py)) and the
+static frontend, which proxies `/api/*` to it so the browser sees one origin and the strict CSP holds. In Render choose
+**New > Blueprint**, pick this repository and set one demo password (used by `ATLAS_DEMO_PASSWORD` and
+`VITE_DEMO_PASSWORD`). The API runs in `staging` mode: strict configuration checks, no unauthenticated access, no
+`/docs`. The demo account is an `editor`, so visitors can run scenarios but not administer. The database is rebuilt on
+every start, so the demo resets itself; the free tier sleeps when idle and takes about a minute to wake.
+
 A good path through the app:
 1. **Overview.** The demo network.
 2. **Supplier risk → DEMO Meridian Metals.** High score but low reliability, because the evidence is synthetic.
@@ -146,7 +156,8 @@ See [SECURITY.md](SECURITY.md) for reporting and known gaps.
 ## Limitations
 
 - **Data:** all data in the repository is synthetic, and no model has been evaluated on real data.
-- **Not deployed:** it has only been run locally. The Dockerfiles, Compose files and CI workflow haven't been run yet.
+- **Containers:** the hosted-demo start path is verified locally in staging mode; the Dockerfiles, Compose files and CI
+  workflow haven't been built or run on a container engine yet.
 - **No vendor connectors:** there are none for ERP, WMS or TMS systems; the REST connector is generic.
 
 More in [docs/limitations.md](docs/limitations.md).

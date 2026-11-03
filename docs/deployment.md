@@ -14,11 +14,12 @@ procedures are in [`deployment/`](deployment/): start with `PRODUCTION_SETUP.md`
 | Staging-rule API start + smoke test | `scripts/smoke_test.py` against a live server (Linux) |
 | Online backup and restore-then-run | `scripts/backup_db.py`, `tests/test_deploy_restore.py` |
 | Production build of the SPA served statically | `npm run build` + `vite preview` under the browser E2E suite |
+| Hosted-demo start path (`scripts/demo_start.py`, staging mode) | 2026-11-03, Windows 11 / Python 3.11, outside a container: demo world built, demo account created, `/readiness` = ready, `/docs` 404, unauthenticated 401, demo login works, admin API 403 for the demo account |
 
 ## Not verified (no capability in the build environment)
 
 Docker images and `docker-compose.yml` / `docker-compose.staging.yml`; the GitHub Actions workflow; TLS
-termination and reverse proxy; PostgreSQL; any hosted environment; scheduled or off-site backups.
+termination and reverse proxy; PostgreSQL deployments; the Render blueprint (`render.yaml`) and `deploy/demo/Dockerfile`; scheduled or off-site backups.
 
 ## Minimum production checklist
 
