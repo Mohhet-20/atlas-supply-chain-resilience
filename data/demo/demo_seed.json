@@ -1,0 +1,442 @@
+{
+  "dataset": "ATLAS synthetic demo v2",
+  "notice": "ALL RECORDS ARE FICTIONAL SYNTHETIC DEMO DATA. They do not describe real companies, facilities, or events.",
+  "suppliers": [
+    {
+      "supplier_code": "DEMO-SUP-001",
+      "name": "Synthetic Supplier Alpha",
+      "country_or_region": "Southeast Asia",
+      "category": "Electronic Components",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-002",
+      "name": "Synthetic Supplier Bravo",
+      "country_or_region": "Western Europe",
+      "category": "Electronic Components",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-003",
+      "name": "Synthetic Supplier Charlie",
+      "country_or_region": "North America",
+      "category": "Metal Fabrication",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-004",
+      "name": "Synthetic Supplier Delta",
+      "country_or_region": "South Asia",
+      "category": "Metal Fabrication",
+      "status": "ON_HOLD",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-005",
+      "name": "Synthetic Supplier Echo",
+      "country_or_region": "Eastern Europe",
+      "category": "Packaging",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-006",
+      "name": "Synthetic Supplier Foxtrot",
+      "country_or_region": "South America",
+      "category": "Packaging",
+      "status": "INACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "supplier_code": "DEMO-SUP-007",
+      "name": "Synthetic Supplier Golf",
+      "legal_name": "Synthetic Supplier Golf Holdings (fictional)",
+      "country_or_region": "Southeast Asia",
+      "category": "Raw Materials",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    }
+  ],
+  "facilities": [
+    {
+      "facility_code": "DEMO-FAC-001",
+      "name": "Synthetic Plant One",
+      "facility_type": "MANUFACTURING",
+      "country_or_region": "Western Europe",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO",
+      "city": "Synthetic City A",
+      "latitude": 12.5,
+      "longitude": 101.5,
+      "location_status": "UNVERIFIED",
+      "capacity_value": 50000,
+      "capacity_unit": "units/week"
+    },
+    {
+      "facility_code": "DEMO-FAC-002",
+      "name": "Synthetic Plant Two",
+      "facility_type": "MANUFACTURING",
+      "country_or_region": "North America",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO",
+      "city": "Synthetic City B",
+      "latitude": 50.1,
+      "longitude": 8.7,
+      "location_status": "UNVERIFIED"
+    },
+    {
+      "facility_code": "DEMO-FAC-003",
+      "name": "Synthetic Distribution Hub",
+      "facility_type": "DISTRIBUTION",
+      "country_or_region": "North America",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "facility_code": "DEMO-FAC-004",
+      "name": "Synthetic Regional Warehouse",
+      "facility_type": "WAREHOUSE",
+      "country_or_region": "Western Europe",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "facility_code": "DEMO-FAC-005",
+      "name": "Synthetic Raw Materials Works",
+      "facility_type": "MANUFACTURING",
+      "country_or_region": "Southeast Asia",
+      "owner_supplier_code": "DEMO-SUP-007",
+      "status": "ACTIVE",
+      "provenance": "SYNTHETIC_DEMO"
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_code": "DEMO-REL-001",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-001",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-001",
+      "capacity_value": 5000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 14
+    },
+    {
+      "relationship_code": "DEMO-REL-002",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-001",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-002",
+      "capacity_value": 3000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 21
+    },
+    {
+      "relationship_code": "DEMO-REL-003",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-002",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-003",
+      "capacity_value": 4000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 10
+    },
+    {
+      "relationship_code": "DEMO-REL-004",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-002",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-004",
+      "capacity_value": 1000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 28
+    },
+    {
+      "relationship_code": "DEMO-REL-005",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-003",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-005",
+      "lead_time_days": 7
+    },
+    {
+      "relationship_code": "DEMO-REL-006",
+      "relationship_type": "SUPPLIES",
+      "target_facility_code": "DEMO-FAC-002",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-001",
+      "capacity_value": 500,
+      "capacity_unit": "units/week",
+      "lead_time_days": 16
+    },
+    {
+      "relationship_code": "DEMO-REL-007",
+      "relationship_type": "TRANSFERS_TO",
+      "target_facility_code": "DEMO-FAC-003",
+      "provenance": "SYNTHETIC_DEMO",
+      "source_facility_code": "DEMO-FAC-001",
+      "capacity_value": 6000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 3
+    },
+    {
+      "relationship_code": "DEMO-REL-008",
+      "relationship_type": "TRANSFERS_TO",
+      "target_facility_code": "DEMO-FAC-003",
+      "provenance": "SYNTHETIC_DEMO",
+      "source_facility_code": "DEMO-FAC-002",
+      "capacity_value": 4500,
+      "capacity_unit": "units/week",
+      "lead_time_days": 4
+    },
+    {
+      "relationship_code": "DEMO-REL-009",
+      "relationship_type": "TRANSFERS_TO",
+      "target_facility_code": "DEMO-FAC-004",
+      "provenance": "SYNTHETIC_DEMO",
+      "source_facility_code": "DEMO-FAC-003",
+      "capacity_value": 8000,
+      "capacity_unit": "units/week",
+      "lead_time_days": 2
+    },
+    {
+      "relationship_code": "DEMO-REL-010",
+      "relationship_type": "SUPPLIES",
+      "supplier_code": "DEMO-SUP-007",
+      "target_facility_code": "DEMO-FAC-005",
+      "lead_time_days": 10,
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "relationship_code": "DEMO-REL-011",
+      "relationship_type": "TRANSFERS_TO",
+      "source_facility_code": "DEMO-FAC-005",
+      "target_facility_code": "DEMO-FAC-002",
+      "lead_time_days": 21,
+      "provenance": "SYNTHETIC_DEMO"
+    }
+  ],
+  "observations": [
+    {
+      "observation_code": "DEMO-OBS-001",
+      "metric_name": "on_time_delivery_rate",
+      "value": 93.5,
+      "unit": "percent",
+      "observed_at": "2026-09-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-001"
+    },
+    {
+      "observation_code": "DEMO-OBS-002",
+      "metric_name": "on_time_delivery_rate",
+      "value": 91.0,
+      "unit": "percent",
+      "observed_at": "2026-10-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-001"
+    },
+    {
+      "observation_code": "DEMO-OBS-003",
+      "metric_name": "on_time_delivery_rate",
+      "value": 88.0,
+      "unit": "percent",
+      "observed_at": "2026-10-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-002"
+    },
+    {
+      "observation_code": "DEMO-OBS-004",
+      "metric_name": "on_time_delivery_rate",
+      "value": 96.2,
+      "unit": "percent",
+      "observed_at": "2026-10-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-003"
+    },
+    {
+      "observation_code": "DEMO-OBS-005",
+      "metric_name": "quoted_lead_time",
+      "value": 28,
+      "unit": "days",
+      "observed_at": "2026-09-15T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-004",
+      "quality_notes": "Illustrative value only"
+    },
+    {
+      "observation_code": "DEMO-OBS-006",
+      "metric_name": "quoted_lead_time",
+      "value": 7,
+      "unit": "days",
+      "observed_at": "2026-09-15T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "supplier_code": "DEMO-SUP-005"
+    },
+    {
+      "observation_code": "DEMO-OBS-007",
+      "metric_name": "capacity_utilization",
+      "value": 78.4,
+      "unit": "percent",
+      "observed_at": "2026-10-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-001"
+    },
+    {
+      "observation_code": "DEMO-OBS-008",
+      "metric_name": "capacity_utilization",
+      "value": 64.9,
+      "unit": "percent",
+      "observed_at": "2026-10-01T00:00:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-002"
+    },
+    {
+      "observation_code": "DEMO-OBS-009",
+      "metric_name": "inventory_on_hand",
+      "value": 12500,
+      "unit": "units",
+      "observed_at": "2026-10-05T08:30:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-003"
+    },
+    {
+      "observation_code": "DEMO-OBS-010",
+      "metric_name": "inventory_on_hand",
+      "value": 4200,
+      "unit": "units",
+      "observed_at": "2026-10-05T08:30:00Z",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-004"
+    },
+    {
+      "observation_code": "DEMO-OBS-011",
+      "metric_name": "inventory_on_hand",
+      "value": 11800,
+      "unit": "units",
+      "observed_at": "2026-10-12T08:30:00+00:00",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-003"
+    },
+    {
+      "observation_code": "DEMO-OBS-012",
+      "metric_name": "capacity_utilization",
+      "value": 41.0,
+      "unit": "percent",
+      "observed_at": "2026-10-12T08:30:00+05:30",
+      "source_label": "Synthetic demo dataset v1",
+      "provenance": "SYNTHETIC_DEMO",
+      "facility_code": "DEMO-FAC-004",
+      "quality_notes": "Timestamp supplied with +05:30 offset; stored as UTC"
+    }
+  ],
+  "products": [
+    {
+      "product_code": "DEMO-PRD-001",
+      "name": "Synthetic Microcontroller Unit",
+      "category": "Electronic Components",
+      "unit_of_measure": "EA",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "product_code": "DEMO-PRD-002",
+      "name": "Synthetic Steel Bracket",
+      "category": "Metal Fabrication",
+      "unit_of_measure": "EA",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "product_code": "DEMO-PRD-003",
+      "name": "Synthetic Corrugated Carton",
+      "category": "Packaging",
+      "unit_of_measure": "EA",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "product_code": "DEMO-PRD-004",
+      "name": "Synthetic Alloy Ingot",
+      "category": "Raw Materials",
+      "unit_of_measure": "KG",
+      "provenance": "SYNTHETIC_DEMO"
+    }
+  ],
+  "product_links": [
+    {
+      "link_code": "DEMO-PL-001",
+      "link_type": "SUPPLIES_PRODUCT",
+      "product_code": "DEMO-PRD-001",
+      "supplier_code": "DEMO-SUP-001",
+      "quantity_value": 20000,
+      "quantity_unit": "EA",
+      "lead_time_days": 35,
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-002",
+      "link_type": "SUPPLIES_PRODUCT",
+      "product_code": "DEMO-PRD-001",
+      "supplier_code": "DEMO-SUP-002",
+      "lead_time_days": 28,
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-003",
+      "link_type": "SUPPLIES_PRODUCT",
+      "product_code": "DEMO-PRD-002",
+      "supplier_code": "DEMO-SUP-003",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-004",
+      "link_type": "SUPPLIES_PRODUCT",
+      "product_code": "DEMO-PRD-003",
+      "supplier_code": "DEMO-SUP-005",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-005",
+      "link_type": "SUPPLIES_PRODUCT",
+      "product_code": "DEMO-PRD-004",
+      "supplier_code": "DEMO-SUP-007",
+      "quantity_value": 8000,
+      "quantity_unit": "KG",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-006",
+      "link_type": "PRODUCES",
+      "product_code": "DEMO-PRD-004",
+      "facility_code": "DEMO-FAC-005",
+      "quantity_value": 9000,
+      "quantity_unit": "KG",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-007",
+      "link_type": "PRODUCES",
+      "product_code": "DEMO-PRD-002",
+      "facility_code": "DEMO-FAC-001",
+      "provenance": "SYNTHETIC_DEMO"
+    },
+    {
+      "link_code": "DEMO-PL-008",
+      "link_type": "STORES",
+      "product_code": "DEMO-PRD-001",
+      "facility_code": "DEMO-FAC-002",
+      "provenance": "SYNTHETIC_DEMO"
+    }
+  ]
+}

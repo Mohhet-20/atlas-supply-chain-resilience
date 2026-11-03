@@ -1,0 +1,17 @@
+{
+  "name": "sample erp supplier export",
+  "entity_type": "SUPPLIER",
+  "source_format": "CSV",
+  "description": "Maps the sample German-language ERP export (semicolon delimited) to ATLAS fields.",
+  "definition": {
+    "columns": {
+      "external_id": {"source": "Lieferant-Nr"},
+      "name": {"source": "Firmenname"},
+      "country_or_region": {"source": "Land"},
+      "category": {"source": "Warengruppe"},
+      "status": {"source": "Aktiv", "value_map": {"J": "ACTIVE", "N": "INACTIVE"}}
+    },
+    "unknown_field_policy": "warn",
+    "date_format": "%Y-%m-%d"
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-11-03T10:06:45+00:00",
+  "machine": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "cpus": 22
+  },
+  "server": "uvicorn, 1 process, SQLite (WAL), synthetic demo world; client on the same machine",
+  "read_mix": [
+    {
+      "weight": 4,
+      "path": "/suppliers?limit=25"
+    },
+    {
+      "weight": 3,
+      "path": "/dashboard/summary"
+    },
+    {
+      "weight": 2,
+      "path": "/network/summary"
+    },
+    {
+      "weight": 3,
+      "path": "/risk/suppliers"
+    },
+    {
+      "weight": 2,
+      "path": "/analytics/overview"
+    },
+    {
+      "weight": 2,
+      "path": "/alerting/alerts"
+    },
+    {
+      "weight": 2,
+      "path": "/graph/relationships"
+    },
+    {
+      "weight": 1,
+      "path": "/registry/search?q=DEMO"
+    },
+    {
+      "weight": 1,
+      "path": "/inventory/analyses"
+    }
+  ],
+  "phases": {
+    "reads": [
+      {
+        "clients": 1,
+        "seconds": 20.0,
+        "requests": 2980,
+        "throughput_rps": 149.0,
+        "error_rate": 0.0,
+        "statuses": {
+          "200": 2980
+        },
+        "latency_ms": {
+          "p50": 5.2,
+          "p95": 20.1,
+          "p99": 28.3,
+          "max": 145.6,
+          "mean": 6.6
+        }
+      },
+      {
+        "clients": 4,
+        "seconds": 20.02,
+        "requests": 2757,
+        "throughput_rps": 137.7,
+        "error_rate": 0.0,
+        "statuses": {
+          "200": 2757
+        },
+        "latency_ms": {
+          "p50": 23.4,
+          "p95": 74.3,
+          "p99": 109.4,
+          "max": 218.2,
+          "mean": 28.5
+        }
+      },
+      {
+        "clients": 16,
+        "seconds": 20.11,
+        "requests": 2515,
+        "throughput_rps": 125.1,
+        "error_rate": 0.0,
+        "statuses": {
+          "200": 2515
+        },
+        "latency_ms": {
+          "p50": 91.3,
+          "p95": 342.2,
+          "p99": 504.1,
+          "max": 685.8,
+          "mean": 119.4
+        }
+      },
+      {
+        "clients": 32,
+        "seconds": 20.14,
+        "requests": 2116,
+        "throughput_rps": 105.1,
+        "error_rate": 0.0,
+        "statuses": {
+          "200": 2116
+        },
+        "latency_ms": {
+          "p50": 218.7,
+          "p95": 590.9,
+          "p99": 843.3,
+          "max": 1018.7,
+          "mean": 258.8
+        }
+      }
+    ],
+    "writes": [
+      {
+        "clients": 1,
+        "seconds": 20.03,
+        "requests": 340,
+        "throughput_rps": 17.0,
+        "error_rate": 0.0,
+        "statuses": {
+          "200": 340
+        },
+        "latency_ms": {
+          "p50": 56.9,
+          "p95": 61.7,
+          "p99": 95.7,
+          "max": 171.3,
+          "mean": 58.3
+        }
+      },
+      {
+        "clients": 4,
+        "seconds": 20.33,
+        "requests": 437,
+        "throughput_rps": 21.5,
+        "error_rate": 0.2723,
+        "statuses": {
+          "200": 318,
+          "409": 119
+        },
+        "latency_ms": {
+          "p50": 57.7,
+          "p95": 968.6,
+          "p99": 2249.8,
+          "max": 2724.9,
+          "mean": 180.7
+        }
+      },
+      {
+        "clients": 8,
+        "seconds": 20.49,
+        "requests": 452,
+        "throughput_rps": 22.1,
+        "error_rate": 0.3009,
+        "statuses": {
+          "200": 316,
+          "409": 133,
+          "503": 3
+        },
+        "latency_ms": {
+          "p50": 59.6,
+          "p95": 2036.3,
+          "p99": 4712.7,
+          "max": 5608.7,
+          "mean": 346.0
+        }
+      }
+    ],
+    "ratelimit": {
+      "clients": 8,
+      "seconds": 15.0,
+      "requests": 21802,
+      "throughput_rps": 1453.2,
+      "error_rate": 0.945,
+      "statuses": {
+        "200": 1199,
+        "429": 20603
+      },
+      "latency_ms": {
+        "p50": 3.3,
+        "p95": 26.7,
+        "p99": 41.3,
+        "max": 184.4,
+        "mean": 5.3
+      }
+    }
+  }
+}

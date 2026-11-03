@@ -1,0 +1,4 @@
+external_id,relationship_type,supplier_ref,source_facility_ref,target_facility_ref,capacity_value,capacity_unit,lead_time_days
+SMP-R-001,SUPPLIES,SMP-S-001,,SMP-F-001,5000,units/week,21
+SMP-R-002,SUPPLIES,SMP-S-002,,SMP-F-002,,,0
+SMP-R-003,TRANSFERS_TO,,SMP-F-001,SMP-F-002,,,7

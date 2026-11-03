@@ -1,0 +1,8 @@
+external_id,name,country_or_region,category,status
+SMP-S-010,Synthetic Good Row,Chile,Raw Materials,ACTIVE
+SMP-S-011,,Chile,Raw Materials,ACTIVE
+SMP bad id,Synthetic Bad Identifier,Chile,Raw Materials,ACTIVE
+SMP-S-013,Synthetic Bad Status,Chile,Raw Materials,SLEEPING
+SMP-S-010,Synthetic Duplicate Of First Row,Chile,Raw Materials,ACTIVE
+SMP-S-015,Synthetic Short Row
+=SUM(1+1),Synthetic Formula Injection Attempt,Chile,Raw Materials,ACTIVE

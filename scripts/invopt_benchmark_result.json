@@ -1,0 +1,90 @@
+{
+  "python": "3.10.12",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "cpus": 2,
+  "synthetic": true,
+  "seed": 7,
+  "note": "one product-facility pair, 120 days of synthetic demand (mean 10, sd 3), lead time 5 +/- 1 days, default Limits, one run per row, wall-clock seconds on a shared machine; engine.compute is a pure function of the snapshot, so repeated runs return identical policies",
+  "rows": [
+    {
+      "replications_requested": 30,
+      "days": 90,
+      "request_extras": {},
+      "replications_used": 30,
+      "candidates": 18,
+      "load_seconds": 0.012,
+      "compute_seconds": 0.081,
+      "result_status": "no_order_needed",
+      "selected": "C11",
+      "budget_note": null
+    },
+    {
+      "replications_requested": 100,
+      "days": 90,
+      "request_extras": {},
+      "replications_used": 100,
+      "candidates": 18,
+      "load_seconds": 0.007,
+      "compute_seconds": 0.262,
+      "result_status": "no_order_needed",
+      "selected": "C11",
+      "budget_note": null
+    },
+    {
+      "replications_requested": 200,
+      "days": 180,
+      "request_extras": {},
+      "replications_used": 200,
+      "candidates": 18,
+      "load_seconds": 0.006,
+      "compute_seconds": 0.944,
+      "result_status": "no_order_needed",
+      "selected": "C11",
+      "budget_note": null
+    },
+    {
+      "replications_requested": 100,
+      "days": 90,
+      "request_extras": {
+        "service_type": "FILL_RATE",
+        "service_target": 0.98
+      },
+      "replications_used": 100,
+      "candidates": 18,
+      "load_seconds": 0.007,
+      "compute_seconds": 0.26,
+      "result_status": "no_order_needed",
+      "selected": "C11",
+      "budget_note": null
+    },
+    {
+      "replications_requested": 100,
+      "days": 90,
+      "request_extras": {
+        "policy_type": "S_Q"
+      },
+      "replications_used": 100,
+      "candidates": 18,
+      "load_seconds": 0.006,
+      "compute_seconds": 0.27,
+      "result_status": "no_order_needed",
+      "selected": "C11",
+      "budget_note": null
+    },
+    {
+      "replications_requested": 100,
+      "days": 90,
+      "request_extras": {
+        "policy_type": "R_S",
+        "review_period_days": 7
+      },
+      "replications_used": 100,
+      "candidates": 6,
+      "load_seconds": 0.006,
+      "compute_seconds": 0.089,
+      "result_status": "recommended",
+      "selected": "C6",
+      "budget_note": null
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Staging overlay: docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.staging up -d
+# Separate project name => separate volume (and database), network and containers from production. UNVERIFIED (never run).
+name: atlas-staging
+services:
+  backend:
+    environment: { ATLAS_ENVIRONMENT: staging, ATLAS_DEMO_DATA_ENABLED: "true" }
+  worker:
+    environment: { ATLAS_ENVIRONMENT: staging }
+  migrate:
+    environment: { ATLAS_ENVIRONMENT: staging }
+  web:
+    ports: ["${ATLAS_WEB_PORT:-8081}:8080"]

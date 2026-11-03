@@ -1,0 +1,4 @@
+external_id,link_type,product_ref,supplier_ref,facility_ref,quantity_value,quantity_unit,lead_time_days,effective_from,effective_to
+SMP-L-001,SUPPLIES_PRODUCT,SMP-P-001,SMP-S-001,,20000,EA,35,2026-01-01,2026-12-31
+SMP-L-002,PRODUCES,SMP-P-002,,SMP-F-001,,,,,
+SMP-L-003,STORES,SMP-P-001,,SMP-F-002,0,EA,,,

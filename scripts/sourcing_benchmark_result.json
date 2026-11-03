@@ -1,0 +1,65 @@
+{
+  "python": "3.10.12",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "cpus": 2,
+  "synthetic": true,
+  "note": "random supplier sets, demand = 30% of total capacity, no supplier-count cap, a bound-exceeded result is reported as such (never as optimal), one solve each, default solver bounds (200k nodes, 20k grid units, 3M DP ops); timing varies with machine load",
+  "timings_s": {
+    "5_suppliers_continuous": {
+      "seconds": 0.0001,
+      "status": "OPTIMAL",
+      "method": "branch_and_bound",
+      "exact": true,
+      "nodes_or_ops": 17
+    },
+    "5_suppliers_lots": {
+      "seconds": 0.0002,
+      "status": "OPTIMAL",
+      "method": "dynamic_programming",
+      "exact": true,
+      "nodes_or_ops": 4524
+    },
+    "10_suppliers_continuous": {
+      "seconds": 0.0001,
+      "status": "OPTIMAL",
+      "method": "branch_and_bound",
+      "exact": true,
+      "nodes_or_ops": 91
+    },
+    "10_suppliers_lots": {
+      "seconds": 0.0009,
+      "status": "OPTIMAL",
+      "method": "dynamic_programming",
+      "exact": true,
+      "nodes_or_ops": 28080
+    },
+    "20_suppliers_continuous": {
+      "seconds": 0.0007,
+      "status": "OPTIMAL",
+      "method": "branch_and_bound",
+      "exact": true,
+      "nodes_or_ops": 367
+    },
+    "20_suppliers_lots": {
+      "seconds": 0.0047,
+      "status": "OPTIMAL",
+      "method": "dynamic_programming",
+      "exact": true,
+      "nodes_or_ops": 148000
+    },
+    "40_suppliers_continuous": {
+      "seconds": 0.007,
+      "status": "OPTIMAL",
+      "method": "branch_and_bound",
+      "exact": true,
+      "nodes_or_ops": 2949
+    },
+    "40_suppliers_lots": {
+      "seconds": 0.0198,
+      "status": "OPTIMAL",
+      "method": "dynamic_programming",
+      "exact": true,
+      "nodes_or_ops": 556556
+    }
+  }
+}

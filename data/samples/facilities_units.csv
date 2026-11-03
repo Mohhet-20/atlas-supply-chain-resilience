@@ -1,0 +1,4 @@
+Site,Site Name,Kind,Country,Daily Capacity,Unit
+SMP-F-101,Synthetic Daily Plant,plant,Spain,100,units/day
+SMP-F-102,Synthetic Weekly Plant,plant,Spain,700,units/week
+SMP-F-103,Synthetic Pallet Plant,plant,Spain,5,pallets

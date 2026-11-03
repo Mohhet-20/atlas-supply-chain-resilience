@@ -1,0 +1,45 @@
+{
+  "python": "3.10.12",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "cpus": 2,
+  "synthetic": true,
+  "note": "random layered graphs; one run each; timing varies with machine load",
+  "timings_s": {
+    "4x5": {
+      "lanes": 55,
+      "dijkstra_s": 3e-05,
+      "dijkstra_found": true,
+      "enumerate_s": 0.0008,
+      "routes": 135,
+      "expansions": 335,
+      "truncated": false
+    },
+    "6x8": {
+      "lanes": 136,
+      "dijkstra_s": 7e-05,
+      "dijkstra_found": true,
+      "enumerate_s": 0.0017,
+      "routes": 1944,
+      "expansions": 4856,
+      "truncated": false
+    },
+    "8x12": {
+      "lanes": 276,
+      "dijkstra_s": 0.00015,
+      "dijkstra_found": true,
+      "enumerate_s": 0.0438,
+      "routes": 26244,
+      "expansions": 65604,
+      "truncated": false
+    },
+    "10x20": {
+      "lanes": 580,
+      "dijkstra_s": 0.00034,
+      "dijkstra_found": true,
+      "enumerate_s": 0.0841,
+      "routes": 79999,
+      "expansions": 200001,
+      "truncated": true
+    }
+  }
+}

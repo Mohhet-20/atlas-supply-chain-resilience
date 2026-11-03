@@ -1,0 +1,135 @@
+# Not yet run on GitHub. Every command in it has been run locally; the PostgreSQL job ran against a local PostgreSQL 16.
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { python-version: ["3.10", "3.11"] }
+    defaults: { run: { working-directory: backend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python-version }}", cache: pip, cache-dependency-path: "backend/requirements*.txt" }
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: ruff format --check .
+      - name: Migrations (clean database to head, no drift)
+        env: { ATLAS_DATABASE_URL: "sqlite:///${{ runner.temp }}/ci.db" }
+        run: |
+          alembic upgrade head
+          alembic check
+      - name: Configuration validation (production rules, strict)
+        env:
+          ATLAS_ENVIRONMENT: production
+          ATLAS_CORS_ALLOWED_ORIGINS: https://atlas.example.test
+          ATLAS_INTEGRATIONS_MASTER_KEY: ci-only-synthetic-key-0123456789abcdef
+          ATLAS_ALERTING_TICK_SECONDS: "30"
+        run: PYTHONPATH=. python ../scripts/validate_config.py --strict
+      - run: python -m pytest
+      - name: Static analysis and dependency audit
+        run: |
+          pip install bandit pip-audit
+          bandit -q -r app -ll
+          pip-audit -r requirements.txt
+  postgres:
+    # The full suite on PostgreSQL 16: migrations to head, no drift, every test except the SQLite-specific ones
+    # (marker sqlite_only). Run locally on Windows against PostgreSQL 16.2 (pgserver); not yet run on CI.
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: ci-only-synthetic }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    defaults: { run: { working-directory: backend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip, cache-dependency-path: "backend/requirements*.txt" }
+      - run: pip install -r requirements-dev.txt
+      - name: Migrations up, drift check, down to base
+        env: { ATLAS_DATABASE_URL: "postgresql+psycopg://postgres:ci-only-synthetic@127.0.0.1:5432/postgres" }
+        run: |
+          alembic upgrade head
+          alembic check
+          alembic downgrade base
+      - name: Test suite on PostgreSQL
+        env: { ATLAS_TEST_POSTGRES_URL: "postgresql+psycopg://postgres:ci-only-synthetic@127.0.0.1:5432/postgres" }
+        run: python -m pytest
+  frontend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: frontend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --omit=dev
+  smoke:
+    # Starts the real API under staging rules and runs scripts/smoke_test.py against it (the same steps were run locally).
+    needs: [backend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10", cache: pip, cache-dependency-path: "backend/requirements*.txt" }
+      - run: pip install -r backend/requirements.txt
+      - name: Start API, create a throwaway admin, smoke test
+        working-directory: backend
+        env:
+          ATLAS_ENVIRONMENT: staging
+          ATLAS_DATA_DIR: ${{ runner.temp }}/atlas-data
+          ATLAS_CORS_ALLOWED_ORIGINS: https://staging.example.test
+          ATLAS_INTEGRATIONS_MASTER_KEY: ci-only-synthetic-key-0123456789abcdef
+          ATLAS_ALERTING_TICK_SECONDS: "5"
+          ATLAS_NEW_PASSWORD: Ci-Only-Synthetic-Pass-77!
+        run: |
+          alembic upgrade head
+          python -m app.auth.cli create-user ci.admin --platform-admin
+          uvicorn app.main:create_app --factory --port 8123 &
+          for i in $(seq 1 30); do curl -sf localhost:8123/api/v1/readiness && break; sleep 1; done
+          TOKEN=$(curl -s -X POST localhost:8123/api/v1/auth/login -H 'content-type: application/json' -d '{"username":"ci.admin","password":"'"$ATLAS_NEW_PASSWORD"'"}' | python -c "import sys,json;print(json.load(sys.stdin)['token'])")
+          echo "::add-mask::$TOKEN"
+          python ../scripts/smoke_test.py --base-url http://127.0.0.1:8123 --token "$TOKEN"
+  e2e:
+    # Browser end-to-end tests: real API over the synthetic demo world + production build of the SPA (frontend/e2e).
+    # Run locally on Windows 11 with system Chrome; on CI they use Playwright's Chromium (PW_CHANNEL=chromium).
+    # Includes the axe-core WCAG 2.1 AA scans (e2e/accessibility.spec.ts) and runs under the production CSP.
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10", cache: pip, cache-dependency-path: "backend/requirements*.txt" }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: python -m venv backend/.venv && backend/.venv/bin/pip install -r backend/requirements-dev.txt
+      - working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          PW_CHANNEL=chromium npx playwright test
+  containers:
+    # Not run locally (no container runtime). Builds only; nothing is pushed.
+    if: github.ref == 'refs/heads/main'
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t atlas-backend:ci backend
+      - run: docker build -t atlas-web:ci frontend
+      - name: Compose file validates
+        run: ATLAS_CORS_ALLOWED_ORIGINS=https://atlas.example.test docker compose config -q

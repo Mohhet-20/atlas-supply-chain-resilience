@@ -1,0 +1,5 @@
+external_id,name,legal_name,country_or_region,category,status
+SMP-S-001,Synthetic Sample Supplier One,Synthetic Sample Supplier One Ltd (fictional),Vietnam,Electronic Components,ACTIVE
+SMP-S-002,Synthetic Sample Supplier Two,,Mexico,Metal Fabrication,ACTIVE
+SMP-S-003,Synthetic Sample Supplier Three,,Poland,Packaging,ON_HOLD
+SMP-S-004,Synthetic Sample Supplier Four,,Turkey,Raw Materials,

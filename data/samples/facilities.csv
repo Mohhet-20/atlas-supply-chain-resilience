@@ -1,0 +1,4 @@
+external_id,name,facility_type,country_or_region,city,latitude,longitude,capacity_value,capacity_unit,owner_ref
+SMP-F-001,Synthetic Sample Plant,MANUFACTURING,Vietnam,Synthetic City,10.8,106.7,12000,units/week,SMP-S-001
+SMP-F-002,Synthetic Sample Warehouse,WAREHOUSE,Mexico,,,,,,
+SMP-F-003,Synthetic Sample Hub,DISTRIBUTION,Poland,,,,0,units/week,SMP-S-003

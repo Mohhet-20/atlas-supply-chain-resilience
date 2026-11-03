@@ -1,0 +1,12 @@
+.venv
+venv
+__pycache__
+*.pyc
+tests
+var
+_to_delete
+.pytest_cache
+.ruff_cache
+*.db
+.env
+.env.*

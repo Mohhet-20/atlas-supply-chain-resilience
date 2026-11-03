@@ -1,0 +1,58 @@
+# Reference composition: UNVERIFIED (never run in the build environment; no container runtime was available).
+# Topology: web (nginx, static + /api proxy) -> backend (API only) ; worker (alert tick + integrations) ; SQLite on a shared volume.
+# SQLite means ONE backend and ONE worker on the same host volume. Scaling out requires PostgreSQL (untested) - see docs/deployment.md.
+# Secrets come from an untracked .env (see .env.example); none are set in this file.
+name: atlas
+x-backend-env: &backend-env
+  ATLAS_ENVIRONMENT: ${ATLAS_ENVIRONMENT:-production}
+  ATLAS_DATA_DIR: /data
+  ATLAS_CORS_ALLOWED_ORIGINS: ${ATLAS_CORS_ALLOWED_ORIGINS:?set ATLAS_CORS_ALLOWED_ORIGINS to the public https origin}
+  ATLAS_INTEGRATIONS_MASTER_KEY: ${ATLAS_INTEGRATIONS_MASTER_KEY:-}
+  ATLAS_ALERTING_TICK_SECONDS: ${ATLAS_ALERTING_TICK_SECONDS:-30}
+  ATLAS_EMBEDDED_WORKER: "false"
+services:
+  migrate:
+    build: ./backend
+    command: ["alembic", "upgrade", "head"]      # explicit, one-shot; the API never migrates on its own
+    environment: *backend-env
+    volumes: ["atlas-data:/data"]
+    restart: "no"
+  backend:
+    build: ./backend
+    command: ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+    environment: *backend-env
+    volumes: ["atlas-data:/data"]
+    depends_on: { migrate: { condition: service_completed_successfully } }
+    expose: ["8000"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    stop_grace_period: 20s
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/v1/readiness', timeout=2).status==200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+  worker:
+    build: ./backend
+    command: ["python", "-m", "app.worker"]
+    healthcheck: { disable: true }   # no HTTP port; liveness = process alive (exits non-zero if a loop thread dies; restart policy recovers)
+    environment: *backend-env
+    volumes: ["atlas-data:/data"]
+    depends_on: { backend: { condition: service_healthy } }
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    stop_grace_period: 30s
+  web:
+    build: ./frontend
+    depends_on: { backend: { condition: service_healthy } }
+    ports: ["${ATLAS_WEB_PORT:-8080}:8080"]       # put a TLS-terminating proxy in front of this port
+    restart: unless-stopped
+volumes:
+  atlas-data:

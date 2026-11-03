@@ -1,0 +1,20 @@
+{
+  "name": "sample facility units",
+  "entity_type": "FACILITY",
+  "source_format": "CSV",
+  "description": "Converts daily capacities to weekly and maps plant -> MANUFACTURING. Unlisted units are rejected, never guessed.",
+  "definition": {
+    "columns": {
+      "external_id": {"source": "Site"},
+      "name": {"source": "Site Name"},
+      "facility_type": {"source": "Kind", "value_map": {"plant": "MANUFACTURING"}},
+      "country_or_region": {"source": "Country"},
+      "capacity_value": {"source": "Daily Capacity"},
+      "capacity_unit": {"source": "Unit", "transform": ["upper"]}
+    },
+    "unknown_field_policy": "warn",
+    "unit_rules": {
+      "capacity_value": {"unit_field": "capacity_unit", "target_unit": "UNITS/WEEK", "factors": {"UNITS/WEEK": 1, "UNITS/DAY": 7}}
+    }
+  }
+}

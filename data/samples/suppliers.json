@@ -1,0 +1,6 @@
+{
+  "records": [
+    {"external_id": "SMP-J-001", "name": "Synthetic Json Supplier A", "country_or_region": "Brazil", "category": "Packaging"},
+    {"external_id": "SMP-J-002", "name": "Synthetic Json Supplier B", "country_or_region": "Peru", "category": "Raw Materials", "status": "ACTIVE"}
+  ]
+}
