@@ -12,10 +12,11 @@ services:
     envVars:
       - key: ATLAS_CORS_ALLOWED_ORIGINS
         value: https://atlas-demo-j2p2.onrender.com     # hostname of the static site
-      - key: ATLAS_DEMO_USERNAME
-        value: demo
-      - key: ATLAS_DEMO_PASSWORD
-        sync: false                                      # choose one; it is shown on the sign-in page
+      # Your private administrator account (normal sign-in form). Set both in the Render dashboard; never commit them.
+      - key: ATLAS_ADMIN_USERNAME
+        sync: false
+      - key: ATLAS_ADMIN_PASSWORD
+        sync: false
       - key: ATLAS_INTEGRATIONS_MASTER_KEY
         generateValue: true
       - key: ATLAS_LOG_LEVEL
@@ -32,10 +33,9 @@ services:
         value: "22"
       - key: VITE_API_BASE_URL
         value: /api/v1
-      - key: VITE_DEMO_USERNAME
-        value: demo
-      - key: VITE_DEMO_PASSWORD
-        sync: false                                      # the same value as ATLAS_DEMO_PASSWORD
+      # Shows "Explore the live demo" (a guest session, no password) on the sign-in page.
+      - key: VITE_GUEST_ACCESS
+        value: "true"
     routes:
       - type: rewrite
         source: /api/*

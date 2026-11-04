@@ -12,10 +12,8 @@ export function apiUrl(path: string): URL {
 }
 
 /**
- * Public demo account, shown on the sign-in page only when both are set at build time (VITE_DEMO_USERNAME,
- * VITE_DEMO_PASSWORD). It is meant for the hosted synthetic-data demo; never set these for a real deployment.
+ * Hosted demo: the sign-in page offers "Explore the live demo", which starts a guest session through POST /auth/guest
+ * (a non-admin account; no password involved). Set VITE_GUEST_ACCESS=true at build time, together with
+ * ATLAS_GUEST_ACCESS_ENABLED on the API.
  */
-const demoUser = (import.meta.env.VITE_DEMO_USERNAME as string | undefined)?.trim();
-const demoPassword = (import.meta.env.VITE_DEMO_PASSWORD as string | undefined)?.trim();
-export const DEMO_ACCOUNT: { username: string; password: string } | undefined =
-  demoUser && demoPassword ? { username: demoUser, password: demoPassword } : undefined;
+export const GUEST_ACCESS: boolean = (import.meta.env.VITE_GUEST_ACCESS as string | undefined)?.trim() === "true";

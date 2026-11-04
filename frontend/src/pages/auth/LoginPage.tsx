@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../components/PageHeader";
 import { ApiError } from "../../lib/api";
 import { authApi } from "../../lib/authApi";
-import { DEMO_ACCOUNT } from "../../lib/config";
+import { GUEST_ACCESS } from "../../lib/config";
 import { tokenStore } from "../../lib/registryApi";
 
 /**
@@ -17,7 +17,20 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const demo = DEMO_ACCOUNT;
+
+  async function exploreAsGuest() {
+    setBusy(true);
+    setError(undefined);
+    try {
+      const result = await authApi.guest();
+      tokenStore.set(result.token, true);
+      navigate("/", { replace: true });
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "The demo is not available right now.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -57,23 +70,17 @@ export function LoginPage() {
           {busy ? "Signing in…" : "Sign in"}
         </button>
       </form>
-      {demo ? (
-        <aside className="panel mt-4 max-w-md p-5 text-sm" aria-label="Demo account">
-          <p className="m-0">
-            This is a public demo with synthetic data. Sign in as <code>{demo.username}</code> with password{" "}
-            <code>{demo.password}</code>, or let the button fill it in.
+      {GUEST_ACCESS ? (
+        <section className="panel mt-4 max-w-md p-5 text-sm" aria-label="Live demo">
+          <p className="m-0 font-semibold">New here?</p>
+          <p className="mt-1 mb-0 text-(--color-muted)">
+            Explore ATLAS with a guest session on a synthetic supply network. You can run scenarios and change data; it
+            resets automatically.
           </p>
-          <button
-            type="button"
-            className="btn mt-3"
-            onClick={() => {
-              setUsername(demo.username);
-              setPassword(demo.password);
-            }}
-          >
-            Use demo account
+          <button type="button" className="btn mt-3" onClick={exploreAsGuest} disabled={busy}>
+            Explore the live demo
           </button>
-        </aside>
+        </section>
       ) : null}
     </>
   );

@@ -7,6 +7,7 @@ const M = { prefix: "/admin" };
 export const authApi = {
   login: (username: string, password: string) =>
     call<LoginResult>("POST", "/login", { ...A, body: { username, password }, keepTokenOn401: true }),
+  guest: () => call<LoginResult>("POST", "/guest", { ...A, keepTokenOn401: true }),
   logout: () => call<void>("POST", "/logout", A),
   logoutAll: () => call<void>("POST", "/logout-all", A),
   me: (signal?: AbortSignal) => call<Profile>("GET", "/me", { ...A, signal }),

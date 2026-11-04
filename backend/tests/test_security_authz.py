@@ -16,6 +16,7 @@ PUBLIC = {
     "/api/v1/health",
     "/api/v1/readiness",
     "/api/v1/auth/login",
+    "/api/v1/auth/guest",  # public by design; 404 unless guest access is enabled (tests/test_guest_access.py)
     "/api/v1/auth/password-reset/request",
     "/api/v1/auth/password-reset/confirm",
     "/api/v1/webhooks/inbound/{uid}",  # authenticated by HMAC signature, not a session

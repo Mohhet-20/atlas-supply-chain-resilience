@@ -1,7 +1,7 @@
 # ATLAS
 
-**[Live demo](https://atlas-demo-j2p2.onrender.com)**: click *Use demo account*, then *Sign in*. Synthetic data;
-runs on Render's free tier, so the first visit after a quiet spell takes about a minute while it wakes.
+**[Live demo](https://atlas-demo-j2p2.onrender.com)**: click *Explore the live demo* (a guest session on synthetic data;
+no sign-up). It runs on Render's free tier, so the first visit after a quiet spell takes about a minute to wake.
 
 Supply-chain resilience platform. ATLAS keeps one model of your suppliers, facilities, products and the
 relationships between them, and uses it to answer the questions a planner actually asks:
@@ -119,10 +119,15 @@ npx vite preview --port 4180           # http://127.0.0.1:4180, sign in as e2e-a
 [`render.yaml`](render.yaml) deploys the same synthetic demo as two free Render services: the API
 ([`deploy/demo/Dockerfile`](deploy/demo/Dockerfile), started by [`scripts/demo_start.py`](scripts/demo_start.py)) and the
 static frontend, which proxies `/api/*` to it so the browser sees one origin and the strict CSP holds. In Render choose
-**New > Blueprint**, pick this repository and set one demo password (used by `ATLAS_DEMO_PASSWORD` and
-`VITE_DEMO_PASSWORD`). The API runs in `staging` mode: strict configuration checks, no unauthenticated access, no
-`/docs`. The demo account is an `editor`, so visitors can run scenarios but not administer. The database is rebuilt on
-every start, so the demo resets itself; the free tier sleeps when idle and takes about a minute to wake.
+**New > Blueprint**, pick this repository and set `ATLAS_ADMIN_USERNAME` and `ATLAS_ADMIN_PASSWORD`: your private
+administrator, kept as Render secrets. The API runs in `staging` mode: strict configuration checks, no unauthenticated
+access, no `/docs`.
+
+Visitors use **Explore the live demo** on the sign-in page. It calls `POST /auth/guest`, which opens a session for a
+`guest` account with the `editor` role: guests can run scenarios and change data but cannot administer. The guest
+account's password is random and never shown; the endpoint refuses any admin account and answers 404 unless
+`ATLAS_GUEST_ACCESS_ENABLED` is set. The database is rebuilt on every start, so the demo resets itself; the free tier
+sleeps when idle and takes about a minute to wake.
 
 A good path through the app:
 1. **Overview.** The demo network.

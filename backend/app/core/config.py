@@ -172,6 +172,9 @@ class Settings(BaseSettings):
     # Authentication (users, organisations, server-side sessions); static API tokens remain as service accounts
     auth_session_ttl_minutes: int = Field(default=480, ge=5, le=60 * 24 * 14)  # absolute session lifetime
     auth_session_idle_minutes: int = Field(default=60, ge=1, le=60 * 24)  # inactivity timeout
+    # Public demo: POST /auth/guest opens a session for this one non-admin account without a password. Off by default.
+    guest_access_enabled: bool = False
+    guest_username: str = "guest"
     auth_reset_ttl_minutes: int = Field(default=30, ge=5, le=24 * 60)
     auth_scrypt_n: int = Field(default=2**15, ge=2**10, le=2**20)  # work factor; must be a power of two
     auth_scrypt_r: int = Field(default=8, ge=1, le=32)

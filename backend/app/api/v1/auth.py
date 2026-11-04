@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from app.auth import service as svc
 from app.core.auth import Actor, CurrentActor, token_table
-from app.core.errors import ForbiddenError, TooManyRequestsError, UnauthenticatedError
+from app.core.errors import ForbiddenError, NotFoundError, TooManyRequestsError, UnauthenticatedError
 from app.core.permissions import permissions_of
 from app.core.ratelimit import auth_rate_limit, client_of
 from app.models.enums import AuditOutcome
@@ -84,6 +84,39 @@ def _profile(user: User, org: Organization | None) -> dict[str, Any]:
         "platform_admin": bool(user.platform_admin),
         "organization": {"uid": org.org_uid, "slug": org.slug, "name": org.name} if org else None,
         "must_change_password": user.must_change_password,
+    }
+
+
+@router.post(
+    "/guest",
+    dependencies=[Depends(auth_rate_limit)],
+    responses=ERR,
+    summary="Start a guest session (public demo only)",
+)
+def guest(request: Request, db: Db) -> dict[str, Any]:
+    """Signs the visitor in as the configured non-admin guest account, with no password involved. 404 unless
+    ATLAS_GUEST_ACCESS_ENABLED is set, so ordinary deployments don't expose it."""
+    cfg = request.app.state.settings
+    try:
+        raw, user, sess = svc.guest_session(db, cfg, client_of(request))
+    except svc.GuestAccessUnavailable as e:
+        raise NotFoundError("Guest access is not available on this deployment.") from e
+    org = db.get(Organization, user.organization_id)
+    audit.record(
+        db,
+        svc.actor_of(user, sess),
+        "auth.guest.started",
+        target_type="user",
+        target_id=user.user_uid,
+        details={"session_id": sess.id},
+        request_id=request_id_of(request),
+    )
+    return {
+        "token": raw,
+        "token_type": "bearer",
+        "expires_at": sess.expires_at.isoformat(),
+        "idle_timeout_minutes": cfg.auth_session_idle_minutes,
+        "user": _profile(user, org),
     }
 
 

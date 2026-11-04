@@ -142,6 +142,33 @@ def login(
     _clear_failures(db, key)
     if passwords.needs_rehash(user.password_hash, n, r, p):
         user.password_hash = passwords.hash_password(password, n, r, p)
+    raw, sess = _open_session(db, cfg, user, client, now)
+    return raw, user, sess
+
+
+class GuestAccessUnavailable(Exception):
+    """Guest access is off, or the configured guest account is missing, inactive or privileged."""
+
+
+def guest_session(
+    db: Session, cfg: Settings, client: str, now: datetime | None = None
+) -> tuple[str, User, AuthSession]:
+    """A session for the configured guest account, for a public demo's "explore" button. Refuses unless guest access
+    is enabled and the account is active and not an administrator, so it can never hand out admin rights."""
+    if not cfg.guest_access_enabled:
+        raise GuestAccessUnavailable("guest access is disabled")
+    now = now or utcnow()
+    user = db.scalar(select(User).where(User.username == cfg.guest_username.strip().lower()))
+    if user is None or user.status != "active" or user.role == "admin" or user.platform_admin:
+        raise GuestAccessUnavailable("no usable guest account")
+    org = db.get(Organization, user.organization_id)
+    if org is None or org.status != "active":
+        raise GuestAccessUnavailable("the guest account's organisation is not active")
+    raw, sess = _open_session(db, cfg, user, client, now)
+    return raw, user, sess
+
+
+def _open_session(db: Session, cfg: Settings, user: User, client: str, now: datetime) -> tuple[str, AuthSession]:
     raw = SESSION_PREFIX + secrets.token_urlsafe(32)
     sess = AuthSession(
         token_hash=digest(raw), user_id=user.id, epoch=user.session_epoch, created_at=now, last_seen_at=now,
@@ -150,7 +177,7 @@ def login(
     db.add(sess)
     user.last_login_at = now
     db.flush()
-    return raw, user, sess
+    return raw, sess
 
 
 def resolve_session(db: Session, cfg: Settings, raw: str, now: datetime | None = None) -> Actor | None:
