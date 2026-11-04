@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL, apiUrl } from "./config";
 import { authHeaders, downloadFile, noteUnauthorized } from "./token";
 import type * as I from "./ingestionTypes";
 import type {
@@ -37,7 +37,7 @@ export class ApiError extends Error {
 type Params = Record<string, string | number | undefined | null>;
 
 function buildUrl(path: string, params?: Params): string {
-  const url = new URL(`${API_BASE_URL}${path}`);
+  const url = apiUrl(path);
   for (const [key, value] of Object.entries(params ?? {})) {
     if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
   }

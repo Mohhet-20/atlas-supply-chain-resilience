@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config";
+import { apiUrl } from "./config";
 import { call, tokenStore, type Params as QueryParams } from "./registryApi";
 import type * as T from "./analyticsTypes";
 
@@ -23,7 +23,7 @@ export const analyticsApi = {
 
 /** Export is fetched with the bearer token (never in the URL) and saved from a Blob. */
 export async function downloadExport(area: string, format: "csv" | "json", q: Q): Promise<string> {
-  const u = new URL(`${API_BASE_URL}${P}/export`);
+  const u = apiUrl(`${P}/export`);
   for (const [k, v] of Object.entries({ ...q, area, format })) if (v !== undefined && v !== null && v !== "") u.searchParams.set(k, String(v));
   const headers: Record<string, string> = {};
   const token = tokenStore.get();

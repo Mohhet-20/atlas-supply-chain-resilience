@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL, apiUrl } from "./config";
 import { ApiError } from "./api";
 import type * as R from "./registryTypes";
 
@@ -22,7 +22,7 @@ interface Opts {
 }
 
 function url(path: string, params?: Params, prefix = "/registry"): string {
-  const u = new URL(`${API_BASE_URL}${prefix}${path}`);
+  const u = apiUrl(`${prefix}${path}`);
   for (const [k, v] of Object.entries(params ?? {})) {
     if (v === undefined || v === null || v === "") continue;
     if (Array.isArray(v)) v.forEach((x) => u.searchParams.append(k, String(x)));

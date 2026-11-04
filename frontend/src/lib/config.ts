@@ -4,6 +4,14 @@ const raw = import.meta.env.VITE_API_BASE_URL as string | undefined;
 export const API_BASE_URL: string = (raw && raw.trim() !== "" ? raw.trim() : "http://127.0.0.1:8000/api/v1").replace(/\/+$/, "");
 
 /**
+ * A URL on the API. Resolved against the page's origin, so a same-origin base such as "/api/v1" (the hosted demo,
+ * where the static site proxies /api/*) works as well as an absolute one; new URL() alone throws on a relative base.
+ */
+export function apiUrl(path: string): URL {
+  return new URL(`${API_BASE_URL}${path}`, window.location.origin);
+}
+
+/**
  * Public demo account, shown on the sign-in page only when both are set at build time (VITE_DEMO_USERNAME,
  * VITE_DEMO_PASSWORD). It is meant for the hosted synthetic-data demo; never set these for a real deployment.
  */
