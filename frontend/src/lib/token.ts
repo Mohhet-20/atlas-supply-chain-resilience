@@ -5,6 +5,8 @@
 const STORAGE_KEY = "atlas.registry.token";
 let token = "";
 let expired = false;
+/** True once the API refused a request that carried no token: this deployment requires signing in. */
+let signInRequired = false;
 const listeners = new Set<() => void>();
 
 function readStored(): string {
@@ -20,6 +22,7 @@ export const tokenStore = {
   get: () => token,
   /** True once a request with a token was refused with 401 (session ended, expired or revoked). */
   expired: () => expired,
+  signInRequired: () => signInRequired,
   /** Drop a token the server no longer accepts and tell the UI, so it can ask the person to sign in again. */
   expire() {
     expired = true;
@@ -43,6 +46,7 @@ export const tokenStore = {
     listeners.forEach((l) => l());
   },
   clear() {
+    signInRequired = false;
     this.set("", false);
   },
   subscribe(l: () => void) {
@@ -58,7 +62,14 @@ export function authHeaders(): Record<string, string> {
 
 /** A 401 to a request that carried a token means the session ended. */
 export function noteUnauthorized(status: number, sentToken: boolean): void {
-  if (status === 401 && sentToken && token) tokenStore.expire();
+  if (status !== 401) return;
+  if (sentToken && token) {
+    tokenStore.expire();
+  } else if (!sentToken && !signInRequired) {
+    // Local development serves anonymous requests; a deployment that refuses them needs the visitor to sign in.
+    signInRequired = true;
+    listeners.forEach((l) => l());
+  }
 }
 
 /** Fetch a file with the bearer token (never in the URL) and hand it to the browser as a download. */

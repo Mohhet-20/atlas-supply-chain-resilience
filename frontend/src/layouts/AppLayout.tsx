@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { LoadingState } from "../components/States";
-import { can, useProfile, useSessionExpired } from "../lib/useSession";
+import { can, useProfile, useSessionExpired, useSignInRequired } from "../lib/useSession";
 import { ApiStatus } from "./ApiStatus";
 
 type NavItem = { to: string; label: string; end?: boolean; permission?: string };
@@ -65,9 +65,13 @@ export function AppLayout() {
   const location = useLocation();
   const profile = useProfile();
   const expired = useSessionExpired();
+  const signInRequired = useSignInRequired();
   const sections = NAV.map((g) => ({ ...g, items: g.items.filter((i) => !i.permission || can(profile.data, i.permission)) })).filter(
     (g) => g.items.length > 0,
   );
+  if (signInRequired && !profile.signedIn && location.pathname !== "/login") {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <div className="min-h-screen md:grid md:grid-cols-[248px_1fr]">
       <a href="#main" className="skip-link">

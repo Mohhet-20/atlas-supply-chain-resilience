@@ -12,6 +12,11 @@ export function useSessionExpired(): boolean {
   return useSyncExternalStore(tokenStore.subscribe, tokenStore.expired, () => false);
 }
 
+/** True once the API has refused an anonymous request, i.e. this deployment requires signing in. */
+export function useSignInRequired(): boolean {
+  return useSyncExternalStore(tokenStore.subscribe, tokenStore.signInRequired, () => false);
+}
+
 /** Profile of the signed-in user, or undefined when nobody is signed in with a session. Never throws into the UI. */
 export function useProfile(): ApiState<Profile> & { signedIn: boolean } {
   const token = useToken();
