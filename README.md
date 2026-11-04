@@ -1,5 +1,8 @@
 # ATLAS
 
+**[Live demo](https://atlas-demo-j2p2.onrender.com)**: click *Use demo account*, then *Sign in*. Synthetic data;
+runs on Render's free tier, so the first visit after a quiet spell takes about a minute while it wakes.
+
 Supply-chain resilience platform. ATLAS keeps one model of your suppliers, facilities, products and the
 relationships between them, and uses it to answer the questions a planner actually asks:
 - Which suppliers are risky, and why?
